@@ -43,7 +43,7 @@ namespace UsandoBanco
                         Produto produto = new Produto();
                         if (produto == null)
                         {
-                            throw new ArgumentNullException();
+                            throw new ArgumentNullException("O valor informado é nulo!");
                         }
                         else
                         {
@@ -95,7 +95,7 @@ namespace UsandoBanco
                         }
                         catch           
                         {               
-                            throw new ArgumentException();           
+                            throw new ArgumentException("O valor informado é inválido!");           
                         }                                    
                         break;
 
@@ -123,7 +123,7 @@ namespace UsandoBanco
                         }
                         catch
                         {
-                            throw new ArgumentException();
+                            throw new ArgumentException("O valor informado é inválido!");
                         }
                         break;
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -22,95 +23,139 @@ namespace UsandoBanco
             Console.WriteLine("2 - Adicionar (Create/Insert)");
             Console.WriteLine("3 - Deletar item (Delete)");
             Console.WriteLine("4 - Alterar item (Update)");
+            try {
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        //var produtos = Produto.GetAll();                    
+                        //ListarItens(produtos);
+                        List<IMenuItem> produtos = Produto.GetAll();
+                        ListarItens(produtos);
 
-            switch (Console.ReadLine())
-            {
-                case "1":
-                    //var produtos = Produto.GetAll();                    
-                    //ListarItens(produtos);
-                    List<IMenuItem> produtos = Produto.GetAll();
-                    ListarItens(produtos);
+                        Console.ReadLine();
 
-                    Console.ReadLine();
-                   
-                    Console.Clear();
-                    ChamarMenu();
+                        Console.Clear();
+                        ChamarMenu();
 
-                    break;
+                        break;
 
-                case "2":
-                    Produto produto = new Produto();
-                    produto.Save();
+                    case "2":
+                        Produto produto = new Produto();
+                        if (produto == null)
+                        {
+                            throw new ArgumentNullException();
+                        }
+                        else
+                        {
+                            produto.Save();
 
-                    Console.WriteLine("Produto Adicionado!");
-                    Thread.Sleep(3000); //espera 3 segundos
+                            Console.WriteLine("Produto Adicionado!");
+                            Thread.Sleep(2000); //espera 2 segundos
 
-                    Console.Clear();
-                    ChamarMenu();
-                   
-                    break;
+                            Console.Clear();
+                            ChamarMenu();
+                        }
+
+                        break;
+
 
                     case "3":
-                    Console.WriteLine("Informe o Id do produto que deseja deletar:");
-                    var idDeletar = long.Parse(Console.ReadLine());
+                        Console.WriteLine("Informe o Id do produto que deseja deletar:");
+                        try 
+                        { 
+                            var idDeletar = long.Parse(Console.ReadLine()); 
+                      
 
-                    //long idDeleletar = 0; 
-                    //while (!long.TryParse(Console.ReadLine(), out idDeleletar))
-                    //{
-                    //    Console.WriteLine("Valor inválido!");
-                    //    Thread.Sleep(2000);
-                    //    break;
-                    //}
+                            //long idDeleletar = 0; 
+                            //while (!long.TryParse(Console.ReadLine(), out idDeleletar))
+                            //{
+                            //    Console.WriteLine("Valor inválido!");
+                            //    Thread.Sleep(2000);
+                            //    break;
+                            //}
 
 
-                    var produtodeletar = new Produto(idDeletar);
+                            var produtodeletar = new Produto(idDeletar);
 
-                    if (produtodeletar.IsValid())
-                    {
-                        produtodeletar.Delete();
-                        Console.WriteLine("Produto excluido!");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Não existe produto com o Id informado: {idDeletar}!"); 
-                    }                                   
-                    
-                    Thread.Sleep(3000); //espera 3 segundos
+                            if (produtodeletar.IsValid())
+                            {
+                                produtodeletar.Delete();
+                                Console.WriteLine("Produto excluido!");
+                            }
+                            else
+                            {
+                                Console.WriteLine($"Não existe produto com o Id informado: {idDeletar}!");
+                            }
 
-                    Console.Clear();
-                    ChamarMenu();
-                    break;
-               
+                            Thread.Sleep(2000); //espera 2 segundos
+
+                            Console.Clear();
+                            ChamarMenu();
+                                       
+                        }
+                        catch           
+                        {               
+                            throw new ArgumentException();           
+                        }                                    
+                        break;
+
                     case "4":
-                    Console.WriteLine("Informe o Id do produto:");
-                    var idUpdate = long.Parse(Console.ReadLine());
-                    var produtoUpdte = new Produto(idUpdate);
+                        Console.WriteLine("Informe o Id do produto:");
+                        try
+                        {
+                            var idUpdate = long.Parse(Console.ReadLine());
+                            var produtoUpdte = new Produto(idUpdate);
 
-                    if (produtoUpdte.IsValid())
-                    {
-                        AlterarItem(produtoUpdte);
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Não existe produto com o Id informado: {idUpdate}!");
-                    }
-                  
-                 
-                    Thread.Sleep(3000); //espera 3 segundos
+                            if (produtoUpdte.IsValid())
+                            {
+                                AlterarItem(produtoUpdte);
+                            }
+                            else
+                            {
+                                Console.WriteLine($"Não existe produto com o Id informado: {idUpdate}!");
+                            }
 
-                    Console.Clear();
-                    ChamarMenu();
-                    break;
 
-                default: 
-                    Console.WriteLine("Opção Inválida");
+                            Thread.Sleep(2000); //espera 2 segundos
 
-                    Thread.Sleep(3000); //espera 3 segundos
-                   
-                    Console.Clear();
-                    ChamarMenu();
-                    break;
+                            Console.Clear();
+                            ChamarMenu();
+                        }
+                        catch
+                        {
+                            throw new ArgumentException();
+                        }
+                        break;
+
+                    default:
+                        //Console.WriteLine("Opção Inválida");
+
+                        //Thread.Sleep(2000); //espera 2 segundos
+
+                        //Console.Clear();
+                        //ChamarMenu();
+                        //break;
+                        throw new ArgumentException($"O valor é inválido.");
+                }
             }
+            catch (ArgumentNullException erroNulo)
+            {
+                Console.WriteLine($"O valor informado é nulo! Erro: {erroNulo.Message}");
+                Thread.Sleep(2000);
+                Console.Clear();
+                ChamarMenu();
+            }
+            catch (ArgumentException erroArgumento)
+            {
+                Console.WriteLine($"Você informou algum valor incorreto! Erro: {erroArgumento.Message}");
+                Thread.Sleep(2000);
+                Console.Clear();
+                ChamarMenu();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro no sistema. Erro {ex.Message} . StackTrace {ex.StackTrace}");                           
+            } 
         }
        
       
